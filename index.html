@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nexify – Premium Mobile Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0A0A0F;
+      --surface: #111118;
+      --card: #16161F;
+      --border: #1E1E2E;
+      --accent: #6C63FF;
+      --accent2: #00D4AA;
+      --text: #F0F0F8;
+      --muted: #888899;
+      --tag: #1A1A2E;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 6vw;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6rem; font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+    .logo span { color: var(--accent); }
+    nav ul { list-style: none; display: flex; gap: 32px; }
+    nav ul a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.9rem; font-weight: 500;
+      transition: color .2s;
+    }
+    nav ul a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--accent); color: #fff !important;
+      padding: 8px 20px; border-radius: 8px;
+      font-weight: 600 !important;
+    }
+    .nav-cta:hover { background: #5a53e0 !important; color: #fff !important; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 120px 6vw 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -200px; left: -100px;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(108,99,255,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; bottom: -100px; right: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(0,212,170,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-content { max-width: 620px; position: relative; z-index: 1; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--tag); border: 1px solid var(--border);
+      padding: 6px 14px; border-radius: 100px;
+      font-size: 0.78rem; color: var(--accent2); font-weight: 500;
+      margin-bottom: 28px;
+    }
+    .hero-badge::before { content: '●'; font-size: 0.6rem; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 700; line-height: 1.12;
+      letter-spacing: -1.5px;
+      margin-bottom: 20px;
+    }
+    h1 em { font-style: normal; color: var(--accent); }
+    .hero p {
+      color: var(--muted); font-size: 1.1rem;
+      max-width: 480px; margin-bottom: 36px;
+    }
+    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--accent); color: #fff;
+      padding: 14px 28px; border-radius: 10px;
+      font-weight: 600; text-decoration: none;
+      font-size: 0.95rem; transition: transform .15s, background .2s;
+    }
+    .btn-primary:hover { background: #5a53e0; transform: translateY(-2px); }
+    .btn-secondary {
+      background: transparent; color: var(--text);
+      padding: 14px 28px; border-radius: 10px;
+      border: 1px solid var(--border);
+      font-weight: 500; text-decoration: none;
+      font-size: 0.95rem; transition: border-color .2s, transform .15s;
+    }
+    .btn-secondary:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+    /* STATS */
+    .stats {
+      display: flex; gap: 40px; margin-top: 56px;
+      flex-wrap: wrap;
+    }
+    .stat-item .num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem; font-weight: 700;
+      color: var(--text);
+    }
+    .stat-item .num span { color: var(--accent); }
+    .stat-item .label { color: var(--muted); font-size: 0.85rem; }
+
+    /* HERO VISUAL */
+    .hero-visual {
+      flex: 1; display: flex; justify-content: center; align-items: center;
+      position: relative; z-index: 1;
+    }
+    .phone-mockup {
+      width: 220px; height: 420px;
+      background: var(--card);
+      border-radius: 36px;
+      border: 2px solid var(--border);
+      position: relative;
+      box-shadow: 0 40px 80px rgba(108,99,255,0.15), 0 0 0 1px rgba(255,255,255,0.03);
+      display: flex; flex-direction: column; align-items: center;
+      padding: 24px 16px;
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    .phone-notch {
+      width: 80px; height: 14px;
+      background: #0A0A0F; border-radius: 100px; margin-bottom: 20px;
+    }
+    .phone-screen-icon {
+      width: 64px; height: 64px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 18px; margin-bottom: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+    }
+    .phone-line { height: 8px; background: var(--border); border-radius: 4px; width: 100%; margin: 6px 0; }
+    .phone-line.short { width: 65%; }
+    .phone-price {
+      margin-top: 12px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem; font-weight: 700;
+      color: var(--accent2);
+    }
+    .phone-tag {
+      position: absolute; top: -12px; right: -12px;
+      background: var(--accent); color: #fff;
+      padding: 4px 12px; border-radius: 100px;
+      font-size: 0.72rem; font-weight: 600;
+    }
+    .float-card {
+      position: absolute;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 10px 14px;
+      font-size: 0.78rem; white-space: nowrap;
+    }
+    .float-card.left { left: -80px; top: 100px; }
+    .float-card.right { right: -90px; bottom: 120px; }
+    .float-card .fc-title { color: var(--muted); margin-bottom: 2px; }
+    .float-card .fc-val { font-weight: 600; font-family: 'Space Grotesk', sans-serif; }
+
+    /* SECTION WRAPPER */
+    section { padding: 80px 6vw; }
+    .section-label {
+      font-size: 0.75rem; text-transform: uppercase;
+      letter-spacing: 2px; color: var(--accent); font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 700; letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+    .section-sub { color: var(--muted); max-width: 520px; }
+
+    /* PRODUCTS */
+    #products { background: var(--surface); }
+    .filter-bar {
+      display: flex; gap: 10px; flex-wrap: wrap;
+      margin: 36px 0 28px;
+    }
+    .filter-btn {
+      padding: 8px 18px; border-radius: 8px;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--muted); font-size: 0.85rem; cursor: pointer;
+      transition: all .2s; font-family: 'Inter', sans-serif;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--accent); border-color: var(--accent);
+      color: #fff;
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    .product-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden;
+      transition: transform .2s, border-color .2s;
+    }
+    .product-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+    .product-img {
+      height: 180px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 4rem;
+      background: linear-gradient(135deg, var(--surface), var(--tag));
+    }
+    .product-info { padding: 16px; }
+    .product-brand { font-size: 0.72rem; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+    .product-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; margin: 4px 0 8px; }
+    .product-specs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    .spec-tag {
+      font-size: 0.7rem; padding: 3px 8px;
+      background: var(--tag); border-radius: 4px; color: var(--muted);
+    }
+    .product-footer { display: flex; align-items: center; justify-content: space-between; }
+    .product-price {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem; font-weight: 700; color: var(--text);
+    }
+    .buy-btn {
+      background: var(--accent); color: #fff;
+      border: none; padding: 8px 16px; border-radius: 8px;
+      font-size: 0.82rem; font-weight: 600; cursor: pointer;
+      transition: background .2s;
+    }
+    .buy-btn:hover { background: #5a53e0; }
+
+    /* FEATURES */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px; margin-top: 48px;
+    }
+    .feature-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 24px;
+      transition: border-color .2s;
+    }
+    .feature-card:hover { border-color: var(--accent2); }
+    .feat-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: var(--tag); display: flex; align-items: center;
+      justify-content: center; font-size: 1.4rem; margin-bottom: 16px;
+    }
+    .feature-card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600; margin-bottom: 8px; font-size: 1rem;
+    }
+    .feature-card p { color: var(--muted); font-size: 0.88rem; }
+
+    /* TESTIMONIALS */
+    #reviews { background: var(--surface); }
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px; margin-top: 48px;
+    }
+    .review-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 24px;
+    }
+    .stars { color: #FFD700; font-size: 1rem; margin-bottom: 12px; }
+    .review-text { color: var(--muted); font-size: 0.9rem; margin-bottom: 16px; line-height: 1.7; }
+    .reviewer { display: flex; align-items: center; gap: 12px; }
+    .avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.9rem;
+    }
+    .reviewer-name { font-weight: 600; font-size: 0.9rem; }
+    .reviewer-loc { color: var(--muted); font-size: 0.78rem; }
+
+    /* CONTACT */
+    #contact { border-top: 1px solid var(--border); }
+    .contact-wrap {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; margin-top: 48px;
+      align-items: start;
+    }
+    .contact-info h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem; font-weight: 700; margin-bottom: 20px;
+    }
+    .contact-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      margin-bottom: 20px;
+    }
+    .ci-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--tag); display: flex; align-items: center;
+      justify-content: center; font-size: 1.1rem; flex-shrink: 0;
+    }
+    .ci-label { color: var(--muted); font-size: 0.78rem; }
+    .ci-val { font-weight: 500; }
+    .contact-form { display: flex; flex-direction: column; gap: 14px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    input, textarea, select {
+      background: var(--card); border: 1px solid var(--border);
+      color: var(--text); padding: 12px 16px; border-radius: 10px;
+      font-family: 'Inter', sans-serif; font-size: 0.9rem;
+      outline: none; width: 100%;
+      transition: border-color .2s;
+    }
+    input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+    textarea { resize: vertical; min-height: 110px; }
+    .submit-btn {
+      background: var(--accent); color: #fff;
+      padding: 14px; border: none; border-radius: 10px;
+      font-size: 0.95rem; font-weight: 600;
+      cursor: pointer; transition: background .2s;
+      font-family: 'Inter', sans-serif;
+    }
+    .submit-btn:hover { background: #5a53e0; }
+
+    /* FOOTER */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 48px 6vw 28px;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px; margin-bottom: 40px;
+    }
+    .footer-brand p { color: var(--muted); font-size: 0.88rem; margin-top: 12px; max-width: 260px; }
+    .footer-col h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem; font-weight: 600; margin-bottom: 16px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul a { color: var(--muted); text-decoration: none; font-size: 0.85rem; transition: color .2s; }
+    .footer-col ul a:hover { color: var(--text); }
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-bottom p { color: var(--muted); font-size: 0.8rem; }
+    .social-links { display: flex; gap: 12px; }
+    .soc {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: var(--card); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; text-decoration: none;
+      transition: border-color .2s;
+    }
+    .soc:hover { border-color: var(--accent); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav ul { display: none; }
+      .hero { flex-direction: column; padding-top: 100px; gap: 48px; }
+      .hero-visual { display: none; }
+      .contact-wrap { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .stats { gap: 24px; }
+      .float-card { display: none; }
+    }
+    @media (max-width: 480px) {
+      .footer-top { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Nexi<span>fy</span></div>
+  <ul>
+    <li><a href="#products">Products</a></li>
+    <li><a href="#features">Why Us</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#contact" class="nav-cta">Contact Us</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">India's Trusted Mobile Store</div>
+    <h1>Premium Phones.<br/><em>Unbeatable</em> Prices.</h1>
+    <p>Nexify mein milenge latest smartphones sabse behtar daam par — genuine products, fast delivery, aur full warranty ke saath.</p>
+    <div class="hero-btns">
+      <a href="#products" class="btn-primary">🛍️ Shop Now</a>
+      <a href="tel:+919696237503" class="btn-secondary">📞 Hume Call Karein</a>
+    </div>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="num">5000<span>+</span></div>
+        <div class="label">Happy Customers</div>
+      </div>
+      <div class="stat-item">
+        <div class="num">200<span>+</span></div>
+        <div class="label">Phone Models</div>
+      </div>
+      <div class="stat-item">
+        <div class="num">100<span>%</span></div>
+        <div class="label">Original Products</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div style="position:relative">
+      <div class="phone-mockup">
+        <div class="phone-tag">New Arrival</div>
+        <div class="phone-notch"></div>
+        <div class="phone-screen-icon">📱</div>
+        <div class="phone-line"></div>
+        <div class="phone-line short"></div>
+        <div class="phone-line"></div>
+        <div class="phone-line short"></div>
+        <div class="phone-price">₹24,999</div>
+      </div>
+      <div class="float-card left">
+        <div class="fc-title">Today's Orders</div>
+        <div class="fc-val" style="color:var(--accent2)">↑ 47 orders</div>
+      </div>
+      <div class="float-card right">
+        <div class="fc-title">Delivery Time</div>
+        <div class="fc-val">⚡ 24 hrs</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="section-label">Our Collection</div>
+  <div class="section-title">Latest Smartphones</div>
+  <p class="section-sub">Sabse popular brands ke genuine phones, competitive prices par.</p>
+
+  <div class="filter-bar">
+    <button class="filter-btn active">All</button>
+    <button class="filter-btn">Samsung</button>
+    <button class="filter-btn">iPhone</button>
+    <button class="filter-btn">OnePlus</button>
+    <button class="filter-btn">Vivo</button>
+    <button class="filter-btn">Realme</button>
+  </div>
+
+  <div class="products-grid">
+    <div class="product-card">
+      <div class="product-img">📱</div>
+      <div class="product-info">
+        <div class="product-brand">Samsung</div>
+        <div class="product-name">Galaxy S24 Ultra</div>
+        <div class="product-specs">
+          <span class="spec-tag">12GB RAM</span>
+          <span class="spec-tag">256GB</span>
+          <span class="spec-tag">200MP</span>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">₹1,24,999</div>
+          <button class="buy-btn">Buy Now</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">🍎</div>
+      <div class="product-info">
+        <div class="product-brand">Apple</div>
+        <div class="product-name">iPhone 15 Pro</div>
+        <div class="product-specs">
+          <span class="spec-tag">8GB RAM</span>
+          <span class="spec-tag">128GB</span>
+          <span class="spec-tag">A17 Pro</span>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">₹1,34,900</div>
+          <button class="buy-btn">Buy Now</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">🔥</div>
+      <div class="product-info">
+        <div class="product-brand">OnePlus</div>
+        <div class="product-name">OnePlus 12</div>
+        <div class="product-specs">
+          <span class="spec-tag">16GB RAM</span>
+          <span class="spec-tag">512GB</span>
+          <span class="spec-tag">100W Fast</span>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">₹64,999</div>
+          <button class="buy-btn">Buy Now</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">⚡</div>
+      <div class="product-info">
+        <div class="product-brand">Realme</div>
+        <div class="product-name">Realme GT 6</div>
+        <div class="product-specs">
+          <span class="spec-tag">12GB RAM</span>
+          <span class="spec-tag">256GB</span>
+          <span class="spec-tag">5500mAh</span>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">₹34,999</div>
+          <button class="buy-btn">Buy Now</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">💎</div>
+      <div class="product-info">
+        <div class="product-brand">Vivo</div>
+        <div class="product-name">Vivo X100 Pro</div>
+        <div class="product-specs">
+          <span class="spec-tag">16GB RAM</span>
+          <span class="spec-tag">512GB</span>
+          <span class="spec-tag">Zeiss Camera</span>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">₹89,999</div>
+          <button class="buy-btn">Buy Now</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">🌟</div>
+      <div class="product-info">
+        <div class="product-brand">Samsung</div>
+        <div class="product-name">Galaxy A55</div>
+        <div class="product-specs">
+          <span class="spec-tag">8GB RAM</span>
+          <span class="spec-tag">128GB</span>
+          <span class="spec-tag">50MP</span>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">₹34,999</div>
+          <button class="buy-btn">Buy Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="section-label">Why Nexify</div>
+  <div class="section-title">Kyun Chunein Hum?</div>
+  <p class="section-sub">Har customer ko best experience milta hai — purchase se lekar delivery tak.</p>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feat-icon">✅</div>
+      <h3>100% Original Products</h3>
+      <p>Sirf genuine phones — koi duplicate nahi, koi dhoka nahi. Har product certified hai.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon">🚀</div>
+      <h3>Same Day Delivery</h3>
+      <p>Gurugram mein order karein aur usi din phone paayein. Pan-India delivery bhi available hai.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon">🔒</div>
+      <h3>Full Warranty Support</h3>
+      <p>Manufacturer warranty ke saath complete after-sales support. Koi tension nahi.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon">💰</div>
+      <h3>EMI Available</h3>
+      <p>0% interest EMI options available hain — aasaan kistoon mein apna dream phone lein.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon">🔄</div>
+      <h3>Easy Exchange</h3>
+      <p>Purana phone dein, naya phone paayein — best exchange value guaranteed.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon">💬</div>
+      <h3>24/7 Support</h3>
+      <p>Koi bhi sawaal ho, hum hamesha available hain — WhatsApp, Call ya Chat par.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="section-label">Customer Reviews</div>
+  <div class="section-title">Log Kya Kehte Hain</div>
+  <p class="section-sub">Hamare 5000+ satisfied customers ki real reviews.</p>
+
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"Nexify se Samsung Galaxy liya — price sab se achha mila aur delivery bhi same day ho gayi. Bahut impressed hoon!"</p>
+      <div class="reviewer">
+        <div class="avatar">R</div>
+        <div>
+          <div class="reviewer-name">Rahul Sharma</div>
+          <div class="reviewer-loc">📍 Gurugram, HR</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"iPhone 15 Pro liya tha — bilkul original mila aur packaging bhi sealed thi. Team bahut helpful thi poore process mein."</p>
+      <div class="reviewer">
+        <div class="avatar">P</div>
+        <div>
+          <div class="reviewer-name">Priya Gupta</div>
+          <div class="reviewer-loc">📍 Delhi, DL</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"Exchange offer bahut achha tha. Purana OnePlus diya aur naya model le liya — bina kisi jhanjhat ke. Recommend karonga zaroor!"</p>
+      <div class="reviewer">
+        <div class="avatar">A</div>
+        <div>
+          <div class="reviewer-name">Amit Verma</div>
+          <div class="reviewer-loc">📍 Noida, UP</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Get In Touch</div>
+  <div class="section-title">Hum Se Baat Karein</div>
+  <p class="section-sub">Koi bhi phone ke baare mein poochna ho — hum help karne ke liye ready hain.</p>
+
+  <div class="contact-wrap">
+    <div class="contact-info">
+      <h3>Contact Details</h3>
+      <div class="contact-item">
+        <div class="ci-icon">📍</div>
+        <div>
+          <div class="ci-label">Store Address</div>
+          <div class="ci-val">Nexify Mobile Store<br/>Sector 14, Gurugram, Haryana 122001</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="ci-icon">📞</div>
+        <div>
+          <div class="ci-label">Phone / WhatsApp</div>
+          <div class="ci-val"><a href="tel:+919696237503" style="color:inherit;text-decoration:none;">+91 96962 37503</a></div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="ci-icon">📧</div>
+        <div>
+          <div class="ci-label">Email</div>
+          <div class="ci-val"><a href="mailto:nexifymobile34@gmail.com" style="color:inherit;text-decoration:none;">nexifymobile34@gmail.com</a></div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="ci-icon">🕐</div>
+        <div>
+          <div class="ci-label">Store Hours</div>
+          <div class="ci-val">Mon–Sat: 10 AM – 8 PM<br/>Sunday: 11 AM – 6 PM</div>
+        </div>
+      </div>
+    </div>
+
+    <form class="contact-form" onsubmit="return false">
+      <div class="form-row">
+        <input type="text" placeholder="Aapka Naam" required/>
+        <input type="tel" placeholder="Mobile Number" required/>
+      </div>
+      <input type="email" placeholder="Email Address"/>
+      <select>
+        <option value="">Kaunsa Phone Chahiye?</option>
+        <option>Samsung Galaxy S24 Ultra</option>
+        <option>iPhone 15 Pro</option>
+        <option>OnePlus 12</option>
+        <option>Realme GT 6</option>
+        <option>Vivo X100 Pro</option>
+        <option>Kuch aur...</option>
+      </select>
+      <textarea placeholder="Koi sawaal ya requirement batayein..."></textarea>
+      <button type="submit" class="submit-btn">📩 Message Bhejein</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo">Nexi<span>fy</span></div>
+      <p>India ka trusted mobile store — original phones, best prices, aur fastest delivery ke saath.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="#">Samsung Phones</a></li>
+        <li><a href="#">Apple iPhones</a></li>
+        <li><a href="#">OnePlus</a></li>
+        <li><a href="#">Vivo & Realme</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#">Phone Exchange</a></li>
+        <li><a href="#">EMI Plans</a></li>
+        <li><a href="#">Same Day Delivery</a></li>
+        <li><a href="#">Warranty Support</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">Hamare Baare Mein</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Return Policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Nexify. All rights reserved. Made with ❤️ in India.</p>
+    <div class="social-links">
+      <a class="soc" href="#">📘</a>
+      <a class="soc" href="#">📸</a>
+      <a class="soc" href="#">💬</a>
+      <a class="soc" href="#">🐦</a>
+    </div>
+  </div>
+</footer>
+
+<!-- WHATSAPP FLOATING BUTTON -->
+<a href="https://wa.me/919696237503?text=Namaste%20Nexify!%20Mujhe%20ek%20phone%20ke%20baare%20mein%20jaankari%20chahiye." 
+   class="wa-float" target="_blank" title="WhatsApp par baat karein">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="30" height="30" fill="#fff">
+    <path d="M16 0C7.164 0 0 7.163 0 16c0 2.827.737 5.476 2.027 7.774L0 32l8.456-2.01A15.93 15.93 0 0016 32c8.836 0 16-7.163 16-16S24.836 0 16 0zm0 29.333a13.27 13.27 0 01-6.77-1.851l-.486-.29-5.02 1.194 1.218-4.89-.318-.503A13.24 13.24 0 012.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.27-9.907c-.398-.2-2.355-1.162-2.72-1.295-.366-.133-.633-.2-.9.2-.266.399-1.031 1.295-1.264 1.561-.233.266-.466.3-.864.1-.398-.2-1.681-.619-3.202-1.977-1.184-1.056-1.983-2.36-2.216-2.759-.233-.399-.025-.615.175-.814.18-.179.398-.466.598-.699.2-.233.266-.4.399-.666.133-.267.067-.5-.033-.7-.1-.2-.9-2.167-1.233-2.966-.324-.778-.654-.673-.9-.685l-.766-.013c-.267 0-.7.1-1.066.5-.367.399-1.4 1.368-1.4 3.335s1.433 3.867 1.633 4.133c.2.267 2.82 4.3 6.832 6.032.955.412 1.7.658 2.282.843.958.305 1.831.262 2.52.159.769-.115 2.355-.963 2.688-1.893.333-.93.333-1.727.233-1.893-.1-.166-.366-.266-.764-.466z"/>
+  </svg>
+  <span class="wa-text">WhatsApp</span>
+</a>
+
+<style>
+  .wa-float {
+    position: fixed; bottom: 28px; right: 28px; z-index: 999;
+    background: #25D366;
+    color: #fff; text-decoration: none;
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 20px; border-radius: 50px;
+    box-shadow: 0 6px 24px rgba(37,211,102,0.4);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem; font-weight: 600;
+    transition: transform .2s, box-shadow .2s;
+    animation: wa-pop 0.5s ease 1s both;
+  }
+  .wa-float:hover {
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 10px 32px rgba(37,211,102,0.55);
+  }
+  @keyframes wa-pop {
+    from { opacity:0; transform: translateY(20px); }
+    to { opacity:1; transform: translateY(0); }
+  }
+  @media (max-width: 480px) {
+    .wa-float { padding: 14px; border-radius: 50%; }
+    .wa-text { display: none; }
+  }
+</style>
+
+<script>
+  // Filter buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Contact form
+  document.querySelector('.contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('.submit-btn');
+    btn.textContent = '✅ Message Bhej Diya!';
+    btn.style.background = 'var(--accent2)';
+    setTimeout(() => {
+      btn.textContent = '📩 Message Bhejein';
+      btn.style.background = '';
+    }, 3000);
+  });
+</script>
+</body>
+</html>
